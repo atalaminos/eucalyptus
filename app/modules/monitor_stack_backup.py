@@ -28,10 +28,6 @@ class MonitorStackBackup:
 
     def init(self):
         start_cron(self.handler,  self.conf.get('MONITOR_STACK_BACKUP_CRON'))
-        self.clear()
-        self.config_rclone()
-        self.backup_stacks()
-        self.clear()
 
     def clear(self):
         current_dir = Path(".")

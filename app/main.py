@@ -27,11 +27,11 @@ manager = Manager()
 
 if __name__ == "__main__":
     threads = [
-        # threading.Thread(target=lambda: MonitorStackSleep(manager).init()),
-        # threading.Thread(target=lambda: MonitorStackAwake(manager).init()),
-        # threading.Thread(target=lambda: MonitorDnsserverAndNginxManager(manager).init()),
-        # threading.Thread(target=lambda: MonitorContainerUpdates(manager).init()),
-        # threading.Thread(target=lambda: MonitorClear(manager).init()),
+        threading.Thread(target=lambda: MonitorStackSleep(manager).init()),
+        threading.Thread(target=lambda: MonitorStackAwake(manager).init()),
+        threading.Thread(target=lambda: MonitorDnsserverAndNginxManager(manager).init()),
+        threading.Thread(target=lambda: MonitorContainerUpdates(manager).init()),
+        threading.Thread(target=lambda: MonitorClear(manager).init()),
         threading.Thread(target=lambda: MonitorStackBackup(manager).init()),
         # threading.Thread(target=lambda: MonitorStackRestore(manager).init()),
     ]
