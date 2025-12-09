@@ -1,0 +1,14 @@
+APScheduler==3.11.1
+certifi==2023.5.7
+charset-normalizer==3.1.0
+dnspython==2.3.0
+idna==3.4
+glom==23.3.0
+moviepy==2.1.2
+ntplib==0.4.0
+ping3==4.0.4
+requests==2.31.0
+python-dotenv==1.2.1
+python-telegram-bot==22.5
+urllib3==2.0.2
+zstandard==0.25.0

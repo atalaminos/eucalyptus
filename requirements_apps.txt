@@ -1,0 +1,13 @@
+certifi==2023.5.7
+charset-normalizer==3.1.0
+dnspython==2.3.0
+idna==3.4
+google-cloud-firestore==2.12.0
+googletrans==4.0.2
+glom==23.3.0
+moviepy==2.1.2
+ntplib==0.4.0
+openai-whisper==20240930
+ping3==4.0.4
+requests==2.31.0
+urllib3==2.0.2

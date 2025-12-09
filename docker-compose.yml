@@ -1,0 +1,15 @@
+services:
+  eucalyptus:
+    build: . 
+    container_name: eucalyptus1-1
+    restart: always
+    ports:
+      - 10.0.2.1:10092:80
+    volumes:
+      - ./app/:/app/
+      - /docker_data/nginxproxymanager1-1/data/logs:/logs:ro
+      - /docker_data/:/docker_data:ro
+    environment:
+      - HOSTNAME_HOST=${HOSTNAME}
+    env_file:
+      - .env
