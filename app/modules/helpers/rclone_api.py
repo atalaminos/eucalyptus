@@ -1,7 +1,6 @@
 import json
 import os
 import re
-import shutil
 import subprocess
 import tarfile
 from pathlib import Path
@@ -24,12 +23,16 @@ class RcloneApi:
         else:
             self.executable = 'rclone'
 
-    def config_create(self, name: str, remote_type: str, username: str, password: str):
+    def config_create(self, name: str, remote_type: str, username: str, password: str, mfa: str=None):
         try:
             # Crear remoto base
+            args = [self.executable, 'config', 'create', name, remote_type, f'user={username}', f'pass={password}']
+
+            if str is not None:
+                args.append(f'2fa={mfa}')
+
             result_base = subprocess.run(
-                [self.executable, 'config', 'create', name, remote_type,
-                 f'user={username}', f'pass={password}'],
+                args,
                 capture_output=True,
                 text=True,
                 check=True

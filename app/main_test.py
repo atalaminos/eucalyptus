@@ -37,7 +37,7 @@ conf = Conf()
 
 rclone = RcloneApi()
 # print(rclone.config_show())
-# print(rclone.config_create('mega1', 'mega_esperando4', 'esperando4@gmail.com', 'modfemesd'))
+# print(rclone.config_create('mega1', 'mega_esperando4', 'esperando4@gmail.com', 'xxx', '4545332))
 # print(rclone.ls('mega_esperando4'))
 # print(rclone.move('mega_esperando4', '../.gitignore',  '/'))
 

@@ -3,4 +3,6 @@
 __pycache__/
 docker_data/
 extern/
+app/main_test.py
+rclone.conf
 conf.sqlite
