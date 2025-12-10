@@ -23,13 +23,12 @@ class MonitorStackBackup:
         UtilsLog.info(f"Arrancado MonitorStackBackup")
         if self.conf.get('MONITOR_STACK_BACKUP_ENABLED'):
             UtilsLog.info(f"Arrancado MonitorStackBackup")
-            self.config_rclone()
+            # Ya no hace falta porque se monta directamente el archivo rclone.conf
+            # self.config_rclone()
             self.backup_stacks()
 
     def init(self):
         start_cron(self.handler,  self.conf.get('MONITOR_STACK_BACKUP_CRON'))
-        self.config_rclone()
-        self.backup_stacks()
 
     def clear(self):
         current_dir = Path(".")
@@ -41,7 +40,6 @@ class MonitorStackBackup:
             file.unlink()
 
     def config_rclone(self):
-
         self.manager.rclone_api.config_set()
         rclone_config = self.manager.rclone_api.config_show()
         UtilsLog.info(f"Configurados {len(rclone_config)} remotes en rclone: {[r for r in rclone_config.keys()]}")
