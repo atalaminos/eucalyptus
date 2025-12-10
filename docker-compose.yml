@@ -9,6 +9,7 @@ services:
       - ./app/:/app/
       - /docker_data/nginxproxymanager1-1/data/logs:/logs:ro
       - /docker_data/:/docker_data:ro
+      - /home/dietpi/.config/rclone/rclone.conf:/rclone.conf:ro
     hostname: ${HOSTNAME}
     environment:
       - HOSTNAME_HOST=${HOSTNAME}

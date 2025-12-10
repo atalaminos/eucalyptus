@@ -35,10 +35,12 @@ conf = Conf()
 
 # UtilsTelegram.enviar_mensaje("as")
 
+# C:\Users\master\AppData\Roaming\rclone
+# /home/dietpi/.config/rclone/rclone.conf
 rclone = RcloneApi()
 # print(rclone.config_show())
-# print(rclone.config_create('mega1', 'mega_esperando4', 'esperando4@gmail.com', 'xxx', '4545332))
-# print(rclone.ls('mega_esperando4'))
+print(rclone.config_create('mega_esperando4', 'mega', 'esperando4@gmail.com', 'azFT541m8y4icH', '210606'))
+print(rclone.ls('mega_esperando4'))
 # print(rclone.move('mega_esperando4', '../.gitignore',  '/'))
 
 # Archivo
