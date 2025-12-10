@@ -36,6 +36,7 @@ class MonitorContainerUpdates:
                 if stack is None:
                     continue
 
+            is_updated = False
             for container in stack['Containers']:
                 image_id_local = container['ImageID']
                 image_name = container['Image']
@@ -47,6 +48,13 @@ class MonitorContainerUpdates:
                         msg = f'{stack["Name"]} ({image_name}) actualizado'
                         UtilsLog.info(msg)
                         UtilsTelegram.enviar_mensaje(msg)
+                        is_updated = True
 
             if is_stopped:
                 self.manager.portainer_api.stop_stack_by_stack_id(stack['Id'])
+
+            # Si está en funcionamiento y se actualiza, se reinicia
+            if not is_stopped and is_updated:
+                self.manager.portainer_api.stop_stack_by_stack_id(stack['Id'])
+                time.sleep(1)
+                self.manager.portainer_api.start_stack_by_stack_id(stack['Id'])
