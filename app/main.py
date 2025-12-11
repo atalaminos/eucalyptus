@@ -25,30 +25,18 @@ if os.getenv('DEBUG') is None:
 manager = Manager()
 
 
-def safe_init(monitor_class):
-    try:
-        monitor_class(manager).init()
-    except Exception as e:
-        UtilsLog.error(f"Error en {monitor_class.__name__}: {str(e)}")
-        raise
-
-
 if __name__ == "__main__":
     threads = [
-        threading.Thread(target=lambda: safe_init(MonitorStackSleep), daemon=False),
-        threading.Thread(target=lambda: safe_init(MonitorStackAwake), daemon=False),
-        threading.Thread(target=lambda: safe_init(MonitorDnsserverAndNginxManager), daemon=False),
-        threading.Thread(target=lambda: safe_init(MonitorContainerUpdates), daemon=False),
-        threading.Thread(target=lambda: safe_init(MonitorClear), daemon=False),
-        threading.Thread(target=lambda: safe_init(MonitorStackBackup), daemon=False)
+        # threading.Thread(target=lambda: MonitorStackSleep(manager).init(), daemon=True),
+        # threading.Thread(target=lambda: MonitorStackAwake(manager).init(), daemon=True),
+        # threading.Thread(target=lambda: MonitorDnsserverAndNginxManager(manager).init(), daemon=True),
+        # threading.Thread(target=lambda: MonitorContainerUpdates(manager).init(), daemon=True),
+        threading.Thread(target=lambda: MonitorClear(manager).init(), daemon=True),
+        # threading.Thread(target=lambda: MonitorStackBackup(manager).init(), daemon=True)
     ]
 
     for t in threads:
         t.start()
 
-    try:
-        for t in threads:
-            t.join()
-    except KeyboardInterrupt:
-        UtilsLog.info("Apagando aplicación...")
-        sys.exit(0)
+    for t in threads:
+        t.join()

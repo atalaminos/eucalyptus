@@ -10,7 +10,7 @@ class UtilsLog:
 
     @staticmethod
     def debug(msg):
-        if os.getenv('DEBUG', False):
+        if os.getenv('DEBUG', False) == '1':
             print(f"{UtilsLog._ts()} DEBUG - {msg}")
 
     @staticmethod
