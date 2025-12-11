@@ -137,13 +137,21 @@ class NginxManagerApi:
             UtilsLog.error(f'Nginxmanager (get_certificates): {e}')
             return []
 
-    def get_certificate_id_by_name(self, name: str) -> int:
-        certificates = self.get_certificates()
-        identifier = None
-        for certificate in certificates:
-            if certificate['nice_name'] == name:
-                identifier = certificate['id']
-        return identifier
+    def get_certificate_id_by_name(self, name):
+        try:
+            certificates = self.get_certificates()
+            if certificates is None or not isinstance(certificates, list):
+                return None
+            
+            for certificate in certificates:
+                if not isinstance(certificate, dict):
+                    continue
+                if certificate.get('nice_name') == name:
+                    return certificate.get('id')
+            return None
+        except Exception as e:
+            UtilsLog.error(f"Error en get_certificate_id_by_name: {str(e)}")
+            return None
 
     def get_proxies(self) -> List[NginxManagerProxy]:
         url = f'{self.endpoint}/nginx/proxy-hosts?expand=owner,certificate'
