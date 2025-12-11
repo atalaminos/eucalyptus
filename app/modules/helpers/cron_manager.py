@@ -6,7 +6,7 @@ from utils.utils_type import UtilsType
 
 def start_cron(handler, expression_cron, misfire_grace_time=None):
 
-    job_defaults = {'misfire_grace_time': None}
+    job_defaults = {'misfire_grace_time': 120}
     if UtilsType.is_integer(misfire_grace_time):
         job_defaults['misfire_grace_time'] = misfire_grace_time
 

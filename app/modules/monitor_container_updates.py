@@ -16,45 +16,51 @@ class MonitorContainerUpdates:
         self.conf = Conf()
 
     def handler(self):
-        if self.conf.get('MONITOR_CONTAINER_UPDATES_ENABLED'):
-            UtilsLog.info(f"Arrancado MonitorContainerUpdates")
-            self.update_images()
+        try:
+            if self.conf.get('MONITOR_CONTAINER_UPDATES_ENABLED'):
+                UtilsLog.info(f"Arrancado MonitorContainerUpdates")
+                self.update_images()
+        except Exception as e:
+            UtilsLog.error(f"Error en MonitorContainerUpdates.handler: {str(e)}")
 
     def init(self):
         start_cron(self.handler,  self.conf.get('MONITOR_CONTAINER_UPDATES_CRON'))
 
     def update_images(self):
-        stacks: List[PortainerStack] = self.manager.portainer_api.get_stacks_with_containers()
-        for stack in stacks:
+        try:
+            stacks: List[PortainerStack] = self.manager.portainer_api.get_stacks_with_containers()
+            for stack in stacks:
 
-            is_stopped = False
-            if stack['Status'] == 2:
-                self.manager.portainer_api.start_stack_by_stack_id(stack['Id'])
-                is_stopped = True
-                time.sleep(1)
-                stack = self.manager.portainer_api.get_stack_with_containers(stack['Name'])
-                if stack is None:
-                    continue
+                is_stopped = False
+                if stack['Status'] == 2:
+                    self.manager.portainer_api.start_stack_by_stack_id(stack['Id'])
+                    is_stopped = True
+                    time.sleep(1)
+                    stack = self.manager.portainer_api.get_stack_with_containers(stack['Name'])
+                    if stack is None:
+                        continue
 
-            is_updated = False
-            for container in stack['Containers']:
-                image_id_local = container['ImageID']
-                image_name = container['Image']
+                is_updated = False
+                for container in stack['Containers']:
+                    image_id_local = container['ImageID']
+                    image_name = container['Image']
 
-                self.manager.portainer_api.download_latest_image_by_image_name(image_name, with_dockerhub_auth=True)
-                image = self.manager.portainer_api.get_image_info_by_name(image_name)
-                if image is not None:
-                    if image_id_local != image['Id']:
-                        msg = f'{stack["Name"]} ({image_name}) actualizado'
-                        UtilsLog.info(msg)
-                        UtilsTelegram.enviar_mensaje(msg)
-                        is_updated = True
+                    self.manager.portainer_api.download_latest_image_by_image_name(image_name, with_dockerhub_auth=True)
+                    image = self.manager.portainer_api.get_image_info_by_name(image_name)
+                    if image is not None:
+                        if image_id_local != image['Id']:
+                            msg = f'{stack["Name"]} ({image_name}) actualizado'
+                            UtilsLog.info(msg)
+                            UtilsTelegram.enviar_mensaje(msg)
+                            is_updated = True
 
-            if is_stopped:
-                self.manager.portainer_api.stop_stack_by_stack_id(stack['Id'])
+                if is_stopped:
+                    self.manager.portainer_api.stop_stack_by_stack_id(stack['Id'])
 
-            # Si está en funcionamiento y se actualiza, se reinicia
-            if not is_stopped and is_updated:
-                self.manager.portainer_api.stop_stack_by_stack_id(stack['Id'])
-                time.sleep(1)
-                self.manager.portainer_api.start_stack_by_stack_id(stack['Id'])
+                # Si está en funcionamiento y se actualiza, se reinicia
+                if not is_stopped and is_updated:
+                    self.manager.portainer_api.stop_stack_by_stack_id(stack['Id'])
+                    time.sleep(1)
+                    self.manager.portainer_api.start_stack_by_stack_id(stack['Id'])
+        except Exception as e:
+            UtilsLog.error(f"Error en update_images: {str(e)}")
