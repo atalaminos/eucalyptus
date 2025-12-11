@@ -70,7 +70,7 @@ class Common:
 
     def dnsserver_delete_domain(self, dnsserver_domain: DnsserverDomainModel):
         self.manager.dnsserver_api.delete_record(dnsserver_domain['domain'])
-        print(f"Eliminado dominio de dnsserver: {dnsserver_domain['domain']}")
+        UtilsLog.info(f"Eliminado dominio de dnsserver: {dnsserver_domain['domain']}")
 
     def nginxmanager_add_proxy_from_portainer_stack(self, stack: PortainerStack):
 

@@ -26,6 +26,6 @@ class MonitorClear:
         num_deleted = 0
         for image in self.manager.portainer_api.get_images():
             if len(image['RepoTags']) == 0 and self.manager.portainer_api.delete_image_by_id(image['Id']):
-                print(f'Eliminada imagen huérfana {image["Id"]}')
+                UtilsLog.info(f'Eliminada imagen huérfana {image["Id"]}')
                 num_deleted += 1
         return num_deleted
