@@ -27,16 +27,20 @@ manager = Manager()
 
 if __name__ == "__main__":
     threads = [
-        threading.Thread(target=lambda: MonitorStackSleep(manager).init(), daemon=True),
-        threading.Thread(target=lambda: MonitorStackAwake(manager).init(), daemon=True),
-        threading.Thread(target=lambda: MonitorDnsserverAndNginxManager(manager).init(), daemon=True),
-        threading.Thread(target=lambda: MonitorContainerUpdates(manager).init(), daemon=True),
-        threading.Thread(target=lambda: MonitorClear(manager).init(), daemon=True),
-        threading.Thread(target=lambda: MonitorStackBackup(manager).init(), daemon=True)
+        threading.Thread(target=lambda: MonitorStackSleep(manager).init(), daemon=False, name="MonitorStackSleep"),
+        threading.Thread(target=lambda: MonitorStackAwake(manager).init(), daemon=False, name="MonitorStackAwake"),
+        threading.Thread(target=lambda: MonitorDnsserverAndNginxManager(manager).init(), daemon=False, name="MonitorDnsserverAndNginxManager"),
+        threading.Thread(target=lambda: MonitorContainerUpdates(manager).init(), daemon=False, name="MonitorContainerUpdates"),
+        threading.Thread(target=lambda: MonitorClear(manager).init(), daemon=False, name="MonitorClear"),
+        threading.Thread(target=lambda: MonitorStackBackup(manager).init(), daemon=False, name="MonitorStackBackup")
     ]
 
     for t in threads:
         t.start()
 
-    for t in threads:
-        t.join()
+    try:
+        while True:
+            time.sleep(1)
+    except KeyboardInterrupt:
+        UtilsLog.info("Apagando aplicación...")
+        sys.exit(0)
