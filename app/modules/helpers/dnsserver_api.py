@@ -32,7 +32,6 @@ class DnsserverApi:
         self.password = password if password is not None else self.conf.get('DNSSERVER_PASSWORD')
         self.token = None
 
-    @auto_login
     def login(self) -> bool:
         url = self.endpoint + f'/user/login?'
         response = requests.get(url, params={'user': self.username, 'pass':  self.password})
