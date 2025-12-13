@@ -1,5 +1,4 @@
 import json
-import os
 import sys
 from enum import Enum
 from typing import TypedDict, List, Optional
@@ -8,7 +7,7 @@ import requests
 from urllib3.exceptions import InsecureRequestWarning
 
 from modules.helpers.conf import Conf
-from modules.portainer.auto_login import auto_login
+from modules.helpers.auto_login import auto_login
 from utils.utils_log import UtilsLog
 
 requests.urllib3.disable_warnings(category=InsecureRequestWarning)

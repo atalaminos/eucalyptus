@@ -36,7 +36,7 @@ class Common:
         # Si los contenedores son 0, entonces el stack está parado
         is_stopped = False
 
-        # Si el portainer no está arrancado (Status = 1 es arrancado), se arranca
+        # Si el auto_login no está arrancado (Status = 1 es arrancado), se arranca
         if stack['Status'] != 1:
             is_stopped = True
             self.manager.portainer_api.start_stack_by_stack_id(stack['Id'])

@@ -6,6 +6,7 @@ import requests
 from glom import glom
 from urllib3.exceptions import InsecureRequestWarning
 
+from modules.helpers.auto_login import auto_login
 from modules.helpers.conf import Conf
 from utils.utils_log import UtilsLog
 
@@ -31,6 +32,7 @@ class DnsserverApi:
         self.password = password if password is not None else self.conf.get('DNSSERVER_PASSWORD')
         self.token = None
 
+    @auto_login
     def login(self) -> bool:
         url = self.endpoint + f'/user/login?'
         response = requests.get(url, params={'user': self.username, 'pass':  self.password})
@@ -45,6 +47,7 @@ class DnsserverApi:
             UtilsLog.error(f'Dnsserver (login): {e}')
             return False
 
+    @auto_login
     def add_record(self, domain: str) -> bool:
         url = self.endpoint + f'/zones/records/add'
 
@@ -67,6 +70,7 @@ class DnsserverApi:
             UtilsLog.error(f'Dnsserver (add_record) con {domain}: {e}')
             return False
 
+    @auto_login
     def delete_record(self, domain: str) -> bool:
         url = self.endpoint + f'/zones/records/delete'
         try:
@@ -88,6 +92,7 @@ class DnsserverApi:
             UtilsLog.error(f'Dnsserver (error delete_record): {e}')
             return False
 
+    @auto_login
     def get_records(self, domain_and_zone: str) -> List[DnsserverDomainModel]:
         url = self.endpoint + f'/zones/records/get'
         try:
